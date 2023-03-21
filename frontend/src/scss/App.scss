@@ -1,0 +1,69 @@
+
+body {
+  div.container {
+    background-color: lightgrey;
+  }
+
+  h1 {
+    color: black;
+  }
+
+  label {
+    margin: 1em;
+  }
+
+  input {
+    margin: 1em;
+  }
+
+  #register-form {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid black;
+
+
+    button {
+      background-color: white;
+      border: 1px solid grey;
+    }
+
+    button:hover {
+      background-color: grey;
+    }
+
+    button:active {
+      background-color: red;
+    }
+  }
+
+  #login-form {
+    border: 1px solid black;
+    
+    button {
+      background-color: white;
+      border: 1px solid grey;
+      padding: 0.2em;
+    }
+    button:hover {
+      background-color: grey;
+    }
+
+    button:active {
+      background-color: red;
+    }
+  }
+
+
+  #protected-button {
+    border: 1px solid black;
+    padding: 0.2em;
+    background-color: white;
+  }
+  #protected-button:hover {
+    background-color: grey;
+  }
+
+  #protected-button:active {
+    background-color: red;
+  }
+}
