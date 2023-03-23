@@ -3,11 +3,8 @@ import mongoose from "mongoose";
 // Definiere Todo Schema
 const userSchema = mongoose.Schema({
     username: { type: String, required: true, unique: true },
-    email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    fullname: { type: String, required: true },
-    projectList: [ { type: mongoose.Schema.Types.ObjectId, ref: 'Role' } ],
-    city: { type: String }
+    projectList: [ { type: mongoose.Schema.Types.ObjectId, ref: 'Project' } ],
 }, { timestamps: true });
 
 
@@ -20,6 +17,7 @@ export async function findUserByUsername(username) {
 
 // DB-Funktion zum Erstellen eines neuen User-Eintrags
 export async function insertNewUser(userBody) {
+    console.log("🚀 ~ file: user.model.js:20 ~ insertNewUser ~ userBody:", userBody)
     try {
         // Erstelle neue Instanz des User Models
         const newUser = new User(userBody);
@@ -28,6 +26,7 @@ export async function insertNewUser(userBody) {
         return await newUser.save();
 
     } catch (error) {
+        console.log("🚀 ~ file: user.model.js:28 ~ insertNewUser ~ error:", error)
         // Pruefe, ob Conflict durch Dupletten-Verletzung
         if ( (error.hasOwnProperty('code')) && (error.code === 11000) ) {
             // Schmeisse entsprechendes Fehlerobjekt
@@ -38,7 +37,7 @@ export async function insertNewUser(userBody) {
 
         } else {
             // Muss ein Validierungsproblem sein
-            // Schmeisse entsprechendes Fehlerobjekt
+            // sende entsprechendes Fehlerobjekt
             throw {
                 code: 400,
                 message: error.message
