@@ -6,12 +6,11 @@ const userSchema = mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     fullname: { type: String, required: true },
+    projectList: [ { type: mongoose.Schema.Types.ObjectId, ref: 'Role' } ],
     city: { type: String }
 }, { timestamps: true });
 
 
-// Erstelle ein neues Model Objekt fuer User
-// Erstellt automatisch users Collection in der MongoDB, wenn noch nicht vorhanden
 const User = mongoose.model('User', userSchema);
 
 // DB-Funktion zum Abrufen eines bestimmten User-Eintrags per username

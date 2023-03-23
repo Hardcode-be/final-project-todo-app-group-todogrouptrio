@@ -1,21 +1,21 @@
-//import * as TodoModel from "../model/todo.model.js";
+import * as ProjectModel from "../model/project.model.js";
 
 // Controller Funktion fuer GET /todos
-export async function getAllTodos(req, res) {
+export async function getAllProjects(req, res) {
     // Rufe Model-Funktion auf und speichere Ergebnis
-    let todos = await TodoModel.getAll();
+    let project = await ProjectModel.getAll();
 
-    res.send(todos);
+    res.send(project);
 }
 
 
 // Controller Funktion fuer POST /todos
-export async function addNewTodo(req, res) {
+export async function addNewProject(req, res) {
     // Extrahiere body aus Request Objekt
     let body = req.body;
 
     // Rufe Model-Funktion auf und speichere Ergebnis
-    let result = await TodoModel.insert(body);
+    let result = await ProjectModel.insertProject(body);
 
     if (result.status === 409) {
         res.status(409).send(result);
@@ -28,14 +28,14 @@ export async function addNewTodo(req, res) {
 
 
 // Controller Funktion fuer PUT /todos/:id
-export async function updateTodoById(req, res) {
+export async function updateProjectById(req, res) {
     // Extrahiere ID aus URL Parametern
     let id = req.params.id;
     // Extrahiere Body
     let body = req.body;
 
     // Fuehre Model-Funktion aus und speichere Ergebnis
-    let result = await TodoModel.update(id, body);
+    let result = await ProjectModel.update(id, body);
 
     // Wenn Ergebnis leer ist error code 404
     if (result === null) {
@@ -51,12 +51,12 @@ export async function updateTodoById(req, res) {
 
 
 // Controller Funktion fuer DELETE /todos/:id
-export async function deleteTodoById(req, res) {
+export async function deleteProjectById(req, res) {
     // Extrahiere ID aus URL Parametern
     let id = req.params.id;
 
     // Fuehre Model-Funktion aus und speichere Ergebnis
-    let result = await TodoModel.remove(id);
+    let result = await ProjectModel.remove(id);
 
     // Wenn Ergebnis leer, 404
     if (result === null) {
@@ -66,6 +66,5 @@ export async function deleteTodoById(req, res) {
         return;
     }
 
-    // Sende Updateergbnis zurueck
-    res.send(result);
 }
+

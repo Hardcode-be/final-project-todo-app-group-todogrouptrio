@@ -22,7 +22,7 @@ body {
     border: 1px solid black;
 
 
-    button {
+    button{
       background-color: white;
       border: 1px solid grey;
     }
@@ -34,6 +34,14 @@ body {
     button:active {
       background-color: red;
     }
+  }
+
+  button{
+    border: solid
+  }
+
+  .input-test{
+    border: solid;
   }
 
   #login-form {
