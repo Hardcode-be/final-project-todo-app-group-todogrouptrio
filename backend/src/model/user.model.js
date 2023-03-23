@@ -11,8 +11,6 @@ const userSchema = mongoose.Schema({
 }, { timestamps: true });
 
 
-// Erstelle ein neues Model Objekt fuer User
-// Erstellt automatisch users Collection in der MongoDB, wenn noch nicht vorhanden
 const User = mongoose.model('User', userSchema);
 
 // DB-Funktion zum Abrufen eines bestimmten User-Eintrags per username
