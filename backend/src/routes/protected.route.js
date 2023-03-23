@@ -32,6 +32,20 @@ const protectedRouter = Router();
 protectedRouter.use(verifyToken);
 
 
+//-------------------------------------------------------
+
+// Routen Definition fuer todos
+// protectedRouter.route('/todos')
+//     .get(getAllTodos);
+//     .post(addNewTodo);
+
+// Routen Definition fuer todos mit bestimmter ID
+// protectedRouter.route('/todos/:id')
+//     .put(updateTodoById);
+//     .delete(deleteTodoById);
+
+
+
 // Routen Definition fuer root
 protectedRouter.route('/')
     .get((req, res) => {
