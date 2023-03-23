@@ -6,6 +6,7 @@ const userSchema = mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     fullname: { type: String, required: true },
+    projectList: [ { type: mongoose.Schema.Types.ObjectId, ref: 'Role' } ],
     city: { type: String }
 }, { timestamps: true });
 

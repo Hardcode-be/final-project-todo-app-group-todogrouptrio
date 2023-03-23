@@ -13,4 +13,15 @@ authRouter.route('/login')
     .post(login);
 
 
+// Routen Definition fuer todos
+authRouter.route('/todos')
+    .get(getAllTodos)
+    .post(addNewTodo)
+
+// Routen Definition fuer todos mit bestimmter ID
+authRouter.route('/todos/:id')
+    .put(updateTodoById)
+    .delete(deleteTodoById)
+
+
 export default authRouter;
