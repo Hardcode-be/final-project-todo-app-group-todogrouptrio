@@ -3,10 +3,11 @@ import useAuthStore from '../hooks/useAuthStore';
 
 function Layout() {
     const authStore = useAuthStore();
+    
 
     return (
         <>
-            <h2 style={{textAlign: 'center', fontSize: '18sp'}}>Welcome aboard, {authStore.isAuthenticated() ? authStore.user.fullname : 'Anonymous'}!</h2>
+            <h2 style={{textAlign: 'center', fontSize: '18sp'}}>Welcome to MaNiMa, {authStore.isAuthenticated() ? authStore.user.fullname : 'my Friend'}!</h2>
             <nav>
                 <ul style={{
                     display: 'flex',
@@ -14,7 +15,7 @@ function Layout() {
                     justifyContent: 'center'
                 }}>
                     <li><Link to='/'>Home</Link></li>
-                    <li><Link to='/login'>Login</Link></li>
+                    
                     <li><Link to='/register'>Register</Link></li>
                     <li><Link to='/protected'>Protected</Link></li>
                 </ul>
