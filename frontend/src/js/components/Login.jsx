@@ -24,8 +24,6 @@ function Login() {
 
         try {
             let response = await axios.post('http://localhost:8080/auth/login', newUser)
-            console.log("🚀 ~ file: Login.jsx:23 ~ submitHandler ~ response:", response.data)
-
             authenticate(response.data);
             navigate('/dashboard', {})
 

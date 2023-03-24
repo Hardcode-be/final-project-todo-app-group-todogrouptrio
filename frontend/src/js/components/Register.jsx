@@ -16,7 +16,6 @@ function Register() {
     const submitHandler = async (evt) => {
         evt.preventDefault();
 
-
         let newUser = {
             username: username,
             password: password,
@@ -24,10 +23,11 @@ function Register() {
 
         try {
             let response = await axios.post('http://localhost:8080/auth/register', newUser)
+            console.log("🚀 ~ file: Register.jsx:26 ~ submitHandler ~ response:", response)
 
             if (response.data.success) {
-                navigate('/projects', {})
-
+                authenticate(response.data);
+                navigate('/dashboard', {});
             }
 
         } catch (error) {
@@ -54,7 +54,7 @@ function Register() {
         <input
           value={password}
           onChange={handlePassword}
-          placeholder="password"
+          placeholder="Password"
           type="password"
           name="password"
           className="logreg-input"

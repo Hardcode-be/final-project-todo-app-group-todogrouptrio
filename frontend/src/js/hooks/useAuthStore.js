@@ -9,6 +9,10 @@ const useAuthStore = create(set => ({
 
         // let resp = await axios.get('/auth/validate-token', {withCredentials: true});
     },
+
+    getUser: function() {
+      return this.user;
+    },
     
     // Methode zum Speichern des users und des tokens
     authenticate: (user) => {
