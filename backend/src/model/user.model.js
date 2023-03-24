@@ -57,3 +57,9 @@ export async function getAll() {
 export async function getUserProjects(userId){
     return await User.find({_id:userId},{projectList:1}).populate('projectList')
 }
+
+export async function connectProjectToUser(userId, projectId) {
+    let user = await findUserById(userId);
+    user.projectList.push(projectId);
+    return await user.save();
+}

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { connectProjectToUser } from "./user.model.js";
 
 const todoSubSchema = mongoose.Schema({
     // _id: false,
@@ -32,6 +33,7 @@ export async function insertProject(body, userId) {
 
     // Versuche zu Speichern und den Eintrag zurueckzuliefern
     try {
+        await connectProjectToUser(userId, project._id)
         return await project.save();
 
     } catch (error) { // Fange moegliche Fehler 

@@ -2,16 +2,15 @@ import { useEffect, useState } from "react";
 import useAuthStore from "../hooks/useAuthStore";
 import axios from "axios";
 import { BASE_URL, getHeader } from '../services/config'
+import { useNavigate } from "react-router-dom";
+import CreateProject from "./CreateProject";
 
 
 function Dashboard() {
+    const navigate = useNavigate();
 
     const [projects, setProjects] = useState([]);
-    console.log("🚀 ~ file: Dashboard.jsx:10 ~ Dashboard ~ projects:", projects)
-
-    const user = useAuthStore(state => state.getUser());
     const token = useAuthStore(state => state.getToken());
-    const isAuthenticated = useAuthStore(state => state.isAuthenticated());
 
     useEffect(() => {
         (async function () {
@@ -22,15 +21,14 @@ function Dashboard() {
                 console.log(error);
             }
         })();
-      }, []);
+    }, []);
 
+    const handleClick = (id, projectData) => navigate(`/project/${id}`, {state: projectData})
 
     let project = projects.map(project => {
         
         let creation = new Date(project.createdAt).toLocaleString("de-DE");
         let lastUpdate = new Date(project.updatedAt).toLocaleString("de-DE");
-
-        console.log("afdsaf  "+creation.slice(5), lastUpdate.slice(9));
         
         if(creation === lastUpdate) lastUpdate = '';
         else lastUpdate = `updated: ${lastUpdate}`
@@ -39,28 +37,31 @@ function Dashboard() {
         
         let todoAmount = project.todos.length;
         if(todoAmount === 0) todoAmount = '';
+        
         return (
-            <div key={project._id} className="flex justify-between flex-col border-4 p-4  rounded" >
-                <h1 className="text-xl font-bold text-center mb-2 pb-4">{project.title}</h1>
-                <hr />
-                <span className="pt-4 pb-4">{project.description}</span>
-                <h3>{todoAmount}</h3>
-                <hr />
-                <div className="pt-4 pb-4">
-                    <h4 className="text-xs text-gray-600">{creation}</h4>
-                    <h4 className="text-xs text-gray-600">{lastUpdate}</h4>
+            <a key={project._id} onClick={() => handleClick(project._id, project)}>
+                <div className="flex justify-between flex-col border-4 p-4 h-64 rounded" >
+                    <h1 className="text-xl font-bold text-center mb-2 pb-4">{project.title}</h1>
+                    <hr />
+                    <div className="h-44 pt-2 pb-2">
+                        <span className="pt-4 pb-4">{project.description}</span>
+                        <h3>{todoAmount}</h3>
+                    </div>
+                    <hr />
+                    <div className="pt-4 pb-2">
+                        <h4 className="text-xs text-gray-600">{creation}</h4>
+                        <h4 className="text-xs text-gray-600">{lastUpdate}</h4>
+                    </div>
                 </div>
-            </div>
+            </a>
         )
-    })
-    
+    });
+
 
     return(
         <div  className="grid grid-cols-4 gap-4 border-8 m-14 p-8">
-
-                    {project}
-
-            {/* <h2>{user}</h2> */}
+            {project}
+            <CreateProject />
         </div>
     )
 
