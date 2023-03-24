@@ -2,11 +2,13 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../hooks/useAuthStore";
+import { BASE_URL, getHeader } from '../services/config'
+
 
 function Register() {
     let navigate = useNavigate()
-    const authenticate = useAuthStore(state => state.authenticate);
 
+    const authenticate = useAuthStore(state => state.authenticate);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -22,9 +24,7 @@ function Register() {
         };
 
         try {
-            let response = await axios.post('http://localhost:8080/auth/register', newUser)
-            console.log("🚀 ~ file: Register.jsx:26 ~ submitHandler ~ response:", response)
-
+            let response = await axios.post(BASE_URL+'auth/register', newUser)
             if (response.data.success) {
                 authenticate(response.data);
                 navigate('/dashboard', {});
@@ -59,7 +59,7 @@ function Register() {
           name="password"
           className="logreg-input"
         />
-        <button type="submit">Register</button>
+        <button className="rounded-full" type="submit">Register</button>
       </form>
     </div>
   );

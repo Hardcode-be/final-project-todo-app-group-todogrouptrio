@@ -12,7 +12,6 @@ export async function getAllProjects(req, res) {
 // Controller Funktion fuer POST /todos
 export async function addNewProject(req, res) {
     const userId = req.tokenPayload.userId;
-    console.log("🚀 ~ file: project.controller.js:15 ~ addNewProject ~ userId:", userId)
     let body = req.body;
 
     // Rufe Model-Funktion auf und speichere Ergebnis
@@ -67,8 +66,6 @@ export async function deleteProjectById(req, res) {
         return;
     } else {
         res.status(200).send({deleted : {success: true}})
-
     }
-
 }
 

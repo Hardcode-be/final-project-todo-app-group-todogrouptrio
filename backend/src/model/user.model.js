@@ -15,9 +15,12 @@ export async function findUserByUsername(username) {
     return await User.findOne({username: username});
 }
 
+export async function findUserById(userId) {
+    return await User.findOne({_id:userId});
+}
+
 // DB-Funktion zum Erstellen eines neuen User-Eintrags
 export async function insertNewUser(userBody) {
-    console.log("🚀 ~ file: user.model.js:20 ~ insertNewUser ~ userBody:", userBody)
     try {
         // Erstelle neue Instanz des User Models
         const newUser = new User(userBody);
@@ -49,4 +52,8 @@ export async function insertNewUser(userBody) {
 // DB-Funktion zum Abrufen aller User-Eintraege
 export async function getAll() {
     return await User.find();
+}
+
+export async function getUserProjects(userId){
+    return await User.find({_id:userId},{projectList:1}).populate('projectList')
 }

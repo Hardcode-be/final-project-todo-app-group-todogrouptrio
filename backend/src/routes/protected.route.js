@@ -1,6 +1,8 @@
 import { Router } from "express";
 import jwt from 'jsonwebtoken';
 import { addNewProject, updateProjectById, getAllProjects, deleteProjectById } from "../controller/project.controller.js";
+import { getUserProjects, getStatus } from "../controller/user.controller.js";
+
 
 // Middleware-Funktion zum Validieren von Tokens im Header
 function verifyToken(req, res, next) {
@@ -19,7 +21,6 @@ function verifyToken(req, res, next) {
 
         // Alles gut, speichere payload im req-Objekt
         req.tokenPayload = payload;
-        console.log("🚀 ~ file: protected.route.js:22 ~ jwt.verify ~ payload:", payload)
 
         // Fahre mit Anfrage fort
         next();
@@ -32,10 +33,17 @@ const protectedRouter = Router();
 // Setze Tokenverifizierungs-Middleware fuer alle Endpoints des Routers
 protectedRouter.use(verifyToken);
 
+protectedRouter.route('/status')
+    .get(getStatus)
+
 // Routen Definition fuer todos
 protectedRouter.route('/projects')
     .get(getAllProjects)
     .post(addNewProject)
+
+// Routen Definition fuer todos
+protectedRouter.route('/user/projects')
+    .get(getUserProjects)
 
 // Routen Definition fuer todos mit bestimmter ID
 protectedRouter.route('/projects/:id')

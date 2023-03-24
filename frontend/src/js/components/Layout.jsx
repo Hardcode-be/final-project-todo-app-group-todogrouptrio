@@ -7,7 +7,7 @@ function Layout() {
 
     return (
         <>
-            <h2 style={{textAlign: 'center', fontSize: '18sp'}}>Welcome to MaNiMa, {authStore.isAuthenticated() ? authStore.user.fullname : 'my Friend'}!</h2>
+            <h2 style={{textAlign: 'center', fontSize: '18sp'}}>Welcome to MaNiMa, {authStore.isAuthenticated() ? authStore.user.name : 'my Friend'}!</h2>
             <nav>
                 <ul style={{
                     display: 'flex',

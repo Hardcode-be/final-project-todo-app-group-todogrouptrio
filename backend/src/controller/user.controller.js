@@ -23,6 +23,7 @@ export async function registerNewUser(req, res) {
             success: true,
             id: user._id,
             username: user.username,
+            projects: user.projectList.length,
             token: token
         });
 
@@ -67,9 +68,9 @@ export async function login(req, res) {
         // Sende Erfolgsnachricht sowie neuen Token zurueck
         res.send({
             success: true,
-            message: `User ${user.username} logged in successfully!`,
             id: user._id,
             username: user.username,
+            projects: user.projectList.length,
             token: token
         });
 
@@ -85,4 +86,39 @@ export async function login(req, res) {
 
 export async function getAllUsers(req, res) {
     res.send(await UserModel.getAll());
+}
+
+export async function getUserProjects(req, res) {
+    const userId = req.tokenPayload.userId;
+
+    try {
+
+        let response = await UserModel.getUserProjects(userId);
+        let projects = response[0].projectList;
+        res.send(projects)
+        
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
+export async function getStatus(req, res) {
+    const userId = req.tokenPayload.userId;
+    console.log("🚀 ~ file: user.controller.js:108 ~ getStatus ~ req.tokenPayload:", req.tokenPayload)
+
+    try {
+        let user = await UserModel.findUserById(userId);
+        
+        res.send({
+            success: true,
+            id: user._id,
+            username: user.username,
+            projects: user.projectList.length,
+            // token: req.tokenPayload
+        });
+        
+    } catch (error) {
+        console.log(error);
+    }
 }

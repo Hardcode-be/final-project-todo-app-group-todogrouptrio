@@ -13,6 +13,12 @@ const useAuthStore = create(set => ({
     getUser: function() {
       return this.user;
     },
+
+    setUser: (user) => set({ user: user }),
+
+    getUserProjects: function() {
+      return this.user.projects;
+    },
     
     // Methode zum Speichern des users und des tokens
     authenticate: (user) => {
