@@ -15,7 +15,6 @@ function Layout() {
                     justifyContent: 'center'
                 }}>
                     <li><Link to='/'>Home</Link></li>
-                    
                     <li><Link to='/register'>Register</Link></li>
                     <li><Link to='/protected'>Protected</Link></li>
                 </ul>

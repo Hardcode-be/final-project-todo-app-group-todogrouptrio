@@ -16,7 +16,12 @@ export async function registerNewUser(req, res) {
         const user = await UserModel.insertNewUser(body);
 
         // Sende Erfolgsmeldung zurueck
-        res.send({success: true});
+        res.send({
+            success: true,
+            id: user._id,
+            username: user.username,
+            token: token
+        });
 
     } catch (error) {
         console.log(error);
@@ -50,7 +55,7 @@ export async function login(req, res) {
     // Vergleiche uebermitteltes password mit dem gehashten password aus der DB
     if (bcrypt.compareSync(password, user.password)) {
         // Erstelle neuen JWT Token mit payload und Verfall nach einer Stunde (60 Minuten * 60 Sekunden)
-        let token = jwt.sign({ userId: user._id, username: user.username, email: user.email }, process.env.JWT_SECRET, { expiresIn: 60 * 60 });
+        let token = jwt.sign({ userId: user._id, username: user.username}, process.env.JWT_SECRET);
 
         // Token als httpOnly cookie
         // res.cookie('access_token', token, { expires: new Date(Date.now() + 24 * 60 * 60 * 1000), httpOnly: true })
@@ -61,8 +66,6 @@ export async function login(req, res) {
             message: `User ${user.username} logged in successfully!`,
             id: user._id,
             username: user.username,
-            email: user.email,
-            fullname: user.fullname,
             token: token
         });
 

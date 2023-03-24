@@ -11,11 +11,12 @@ export async function getAllProjects(req, res) {
 
 // Controller Funktion fuer POST /todos
 export async function addNewProject(req, res) {
-    // Extrahiere body aus Request Objekt
+    const userId = req.tokenPayload.userId;
+    console.log("🚀 ~ file: project.controller.js:15 ~ addNewProject ~ userId:", userId)
     let body = req.body;
 
     // Rufe Model-Funktion auf und speichere Ergebnis
-    let result = await ProjectModel.insertProject(body);
+    let result = await ProjectModel.insertProject(body, userId);
 
     if (result.status === 409) {
         res.status(409).send(result);
@@ -56,7 +57,7 @@ export async function deleteProjectById(req, res) {
     let id = req.params.id;
 
     // Fuehre Model-Funktion aus und speichere Ergebnis
-    let result = await ProjectModel.remove(id);
+    let result = await ProjectModel.removeProject(id);
 
     // Wenn Ergebnis leer, 404
     if (result === null) {
@@ -64,6 +65,9 @@ export async function deleteProjectById(req, res) {
             error: `Todo with ID ${id} not found`
         });
         return;
+    } else {
+        res.status(200).send({deleted : {success: true}})
+
     }
 
 }
