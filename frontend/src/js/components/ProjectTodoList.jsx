@@ -27,7 +27,6 @@ function ProjectTodoList(){
     const [todoList, setTodos] = useState(project.state.todos);
     const [updateInfo, setUpdateInfo] = useState(project.state.updatedAt)
 
-
     const handleTodoInputView = () => setShowTodoInput(!showTodoInput);
     const handleTitleView = () => setShowTitleInput(!showTitleInput)
     const handleDescriptionView = () => setShowDescriptionInput(!showDescriptionInput);
@@ -121,6 +120,7 @@ function ProjectTodoList(){
         <div className="border-8 m-14 pt-8 pl-8 pr-8">
             <div className='flex justify-between h-24'>
                 <div>
+                    {/* -----titel----- */}
                     <div className='flex h-12'>
                         {showTitleInput ? 
                             <input value={title} onChange={(e)=>setTitle(e.target.value)} className={inputStyle+' mr-3 text-2xl pl-3 '} placeholder="new todo" type="text"></input> 
@@ -132,8 +132,9 @@ function ProjectTodoList(){
                                 <button className={btnStyle} onClick={handleTitleView}>x</button>
                             </>
                             :
-                            <button onClick={handleTitleView} className='border-none'><img className='w-7' src="../stift.png" alt="" /></button>}
+                            <button onClick={handleTitleView} className='border-none'><img className='w-7' src="../pen.png" alt="" /></button>}
                     </div>
+                    {/* -----Beschreibung----- */}
                     <div className='flex mt-2'>
                         {showDescriptionInput ?
                             <input value={description} onChange={(e)=>setDescription(e.target.value)} className={inputStyle+' mr-3 mt-1 pl-3'} placeholder="new todo" type="text"></input>
@@ -145,15 +146,17 @@ function ProjectTodoList(){
                                 <button className={btnStyle} onClick={handleDescriptionView}>x</button>
                             </>
                             :
-                            <button onClick={handleDescriptionView} className='border-none'><img className='w-5' src="../stift.png" alt="" /></button>}
+                            <button onClick={handleDescriptionView} className='border-none'><img className='w-5' src="../pen.png" alt="" /></button>}
                     </div>
                 </div>
                 <div className='flex'>
+                {/* -----Userliste----- */}
                     <div className='border-2 mr-4'>
                         <a>
-                            {'userliste'}
+                            {project.state.userList}
                         </a>
                     </div>
+                {/* -----Delete----- */}
                     <div className='w-36' >
                         {showDoubleCheck ? 
                             <div className='flex flex-col' >
@@ -164,18 +167,16 @@ function ProjectTodoList(){
                             <button onClick={handleDoubleCheck} className={btnStyle}>delete project</button>}
                     </div>
                 </div>
-
             </div>
-
-
+            {/* -----Todo-Liste----- */}
             <div className="border-2 p-2 mt-4 bg-slate-400">
                 <ul>
                     {todos}
                     {showTodoInput ? todoInput : defaultView}
                 </ul>
             </div>
-
-            <div className="flex justify-evenly m-3 p-4">
+            {/* -----Details----- */}
+            <div className="flex justify-evenly m-3 p-4 ">
                 <p>Created: {creation}</p>
                 <p>Last Update: {lastUpdate}</p>
             </div>

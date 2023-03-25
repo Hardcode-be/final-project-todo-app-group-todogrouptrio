@@ -6,6 +6,7 @@ import PrivateRoute from "./services/PrivateRoute";
 import Dashboard from "./components/Dashboard";
 import ProjectTodoList from "./components/ProjectTodoList";
 import Home from "./components/Home";
+import UserConnection from "./components/UserConnection";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
                 <Route element={<Layout />}> 
                     <Route path="/dashboard" element={<Dashboard />} /> 
                     <Route path="/project/:id" element={<ProjectTodoList />} />
+                    <Route path="/connections" element={<UserConnection />}/>
                </Route>
             </Route>
           </Routes>

@@ -38,7 +38,7 @@ function CreateProject() {
 
     let defaultView =
         <a onClick={() => changeView()}>
-            <div className="flex justify-between flex-col border-4 p-4 h-64 rounded" >
+            <div className="flex justify-between flex-col border-4 p-4 h-64 rounded bg-slate-300" >
                 <h1 className="text-xl font-bold text-center mb-2 pb-4">New Project</h1>
                 <hr />
                 <div className="h-44 text-center ">
@@ -53,7 +53,7 @@ function CreateProject() {
     
 
     let projectInput = 
-        <div className="flex justify-between flex-col border-4 pl-4 pr-4 h-64 rounded relative" >
+        <div className="flex justify-between flex-col border-4 pl-4 pr-4 h-64 rounded relative bg-slate-500" >
             <button onClick={() => changeView()} className="absolute top-0 right-0 rounded-full p-2 border-0 text-black" >X</button>
             <input value={title} onChange={(e)=>setTitle(e.target.value)} className="border-2 p-1"  placeholder="Title" type="text" />
             <hr />

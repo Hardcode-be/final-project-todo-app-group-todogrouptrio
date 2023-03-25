@@ -45,7 +45,7 @@ function Dashboard() {
         //todo delete icon
         return (
             <a key={project._id} onClick={() => handleClick(project._id, project)}>
-                <div className="flex justify-between flex-col border-4 p-4 h-64 rounded" >
+                <div className="flex justify-between flex-col border-4 p-4 h-64 rounded bg-slate-400" >
                     <h1 className="text-xl font-bold text-center mb-2 pb-4">{project.title}</h1>
                     <hr />
                     <div className="h-44 pt-2 pb-2">
@@ -54,9 +54,9 @@ function Dashboard() {
                     <hr />
                     <div className="pt-4 h-24">
                         <div className='flex justify-evenly pb-1'>
-                            <h3 className="text-xs text-gray-600">{todoAmount}</h3>
+                            <h3 className="text-xs text-white">{todoAmount}</h3>
                             <h3></h3>
-                            <h3 className="text-xs text-gray-600">{incompleteCount}</h3>
+                            <h3 className="text-xs text-white">{incompleteCount}</h3>
                         </div>
                         <div className='flex flex-col text-center'>
                             <h4 className="text-xs text-gray-700">{creation}</h4>

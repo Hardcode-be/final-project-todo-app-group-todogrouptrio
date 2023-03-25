@@ -17,7 +17,7 @@ function Layout() {
             <nav>
                 <ul className='flex flex-row justify-evenly m-8' >
                     {isOnDashboard ? <></> : <li><Link to='/'>Dashboard</Link></li>}
-                    <li><Link to='/register'>Connections</Link></li>
+                    <li><Link to='/connections'>Connections</Link></li>
                     <li><button onClick={handleLogout} className='border-none' >Logout</button></li>
                 </ul>
             </nav>
