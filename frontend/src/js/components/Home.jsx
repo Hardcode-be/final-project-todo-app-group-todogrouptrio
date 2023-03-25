@@ -11,6 +11,7 @@ function Home() {
     let navigate = useNavigate()
 
     const token = useAuthStore(state => state.getToken());
+    console.log("🚀 ~ file: Home.jsx:14 ~ Home ~ token:", token)
     const setUser = useAuthStore(state => state.setUser);
 
 
@@ -32,7 +33,9 @@ function Home() {
         }
     })
 
-    let view = !token ? <h1>'...loading'</h1> : 
+    let view = token ? 
+        <h1>'...loading'</h1> 
+        : 
         <div className="container mx-auto">
             <h1 className="text-4xl text-center py-9">MaNiMa-Management-Tool</h1>
             <div className="LogRegContainer">

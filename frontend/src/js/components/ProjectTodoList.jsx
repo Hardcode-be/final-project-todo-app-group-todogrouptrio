@@ -1,9 +1,11 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
 import { BASE_URL, getHeader } from '../services/config';
-import useAuthStore from "../hooks/useAuthStore";
 
+import useAuthStore from "../hooks/useAuthStore";
+import EditSubmit from "./helper/EditSubmit";
+
+import { useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
 
 
 function ProjectTodoList(){
@@ -12,14 +14,13 @@ function ProjectTodoList(){
     const token = useAuthStore(state => state.getToken());
 
     const [showTodoInput, setShowTodoInput] = useState(false);
-    const [showEditInput, setShowEditInput] = useState(false);
-
     const [newTodo, setNewTodo] = useState('');
     const [todoList, setTodos] = useState(project.state.todos);
     const [updateInfo, setUpdateInfo] = useState(project.state.updatedAt)
 
+    let btnStyle = 'pl-2 pr-2 mr-3 rounded';
+
     const handleTodoInputView = () => setShowTodoInput(!showTodoInput);
-    const handleEditInputView = () => setShowEditInput(!showEditInput)
     const handleNewTodo = async () => {
         let todoObj = {
             text: newTodo,
@@ -31,36 +32,6 @@ function ProjectTodoList(){
             setUpdateInfo(response.data.updatedAt)
             setShowTodoInput(!showTodoInput);
             setNewTodo('');
-        } catch (error) {
-            console.log(error);
-        }
-    }
-    const handleDelete = async (todoId) => {
-        try {
-            let response = await axios.delete(BASE_URL+`protected/projects/${id}/todo/${todoId}`, getHeader(token));
-            setTodos(response.data.todos);
-            setUpdateInfo(response.data.updatedAt)
-        } catch (error) {
-            console.log(error);
-        }
-    }
-    const handleEditTodo = async (todoId) => {
-
-        let newText = 'heeeeello'
-
-        try {
-            let response = await axios.put(BASE_URL+`protected/projects/${id}/todo/${todoId}`, newText, getHeader(token));
-            setTodos(response.data.todos);
-            setUpdateInfo(response.data.updatedAt)
-        } catch (error) {
-            console.log(error);
-        }
-    }
-    const handleCompletedTodo = async (todoId, state) => {
-        try {
-            let response = await axios.patch(BASE_URL+`protected/projects/${id}/todo/${todoId}`, {completed: !state}, getHeader(token));
-            setTodos(response.data.todos);
-            setUpdateInfo(response.data.updatedAt)
         } catch (error) {
             console.log(error);
         }
@@ -81,8 +52,8 @@ function ProjectTodoList(){
                 <input value={newTodo} onChange={(e)=>setNewTodo(e.target.value)} className="w-96 ml-2 m-0 p-1 rounded text-black" placeholder="new todo" type="text" />
             </div>
             <div>
-                <button onClick={handleNewTodo} className="pl-2 pr-2 mr-3 rounded">Add Todo</button>
-                <button onClick={handleTodoInputView} className="pl-2 pr-2 mr-3 rounded">Cancel</button>
+                <button onClick={handleNewTodo} className={btnStyle}>Add Todo</button>
+                <button onClick={handleTodoInputView} className={btnStyle}>Cancel</button>
             </div>
         </li>
 
@@ -91,32 +62,33 @@ function ProjectTodoList(){
 
     let todos = todoList.map((todo, index) => {
         let taskStyle = "";
-        if (todo.completed) taskStyle = "line-through"
-        
+        if (todo.completed) taskStyle = "line-through";
 
         return(
             <li key={todo._id} className="flex justify-between m-2 p-3 border-2 bg-slate-500 text-gray-300" >
-                <div className={taskStyle} >
-                    {index+1}. {todo.text}
-                </div>
-                <div>
-                    <button onClick={()=>handleEditTodo(todo._id)} className="pl-2 pr-2 mr-3 rounded">edit</button>
-                    <button onClick={()=>handleDelete(todo._id)} className="pl-2 pr-2 mr-3 rounded">delete</button>
-                    {todo.completed ? 
-                        <button onClick={()=>handleCompletedTodo(todo._id, todo.completed)} className="pl-2 pr-2 mr-3 rounded">undone</button>
-                        :
-                        <button onClick={()=>handleCompletedTodo(todo._id, todo.completed)} className="pl-2 pr-2 mr-3 rounded">done</button>
-                    }
-                    
-                </div>
+                <EditSubmit 
+                    setTodosCallback={setTodos}
+                    setUpdateInfoCallback={setUpdateInfo}
+                    taskStyle={taskStyle} 
+                    index={index} 
+                    todo={todo}
+                />
             </li>
         )
     });
 
     return(
         <div className="border-8 m-14 pt-8 pl-8 pr-8">
-            <h1 className="text-4xl p-2">{project.state.title}</h1>
-            <h1 className="text-xl p-2">{project.state.description}</h1>
+            <div className='flex justify-between'>
+                <div>
+                    <h1 className="text-4xl p-2">{project.state.title}</h1>
+                    <h1 className="text-xl p-2">{project.state.description}</h1>
+                </div>
+                <div className='border-2 w-6'>
+
+                </div>
+
+            </div>
 
 
             <div className="border-2 p-2 bg-slate-400">
