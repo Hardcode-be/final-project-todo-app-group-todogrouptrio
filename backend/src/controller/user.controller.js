@@ -94,7 +94,14 @@ export async function getUserProjects(req, res) {
     try {
 
         let response = await UserModel.getUserProjects(userId);
-        let projects = response[0].projectList;
+        let projects = [...response[0].projectList];
+
+        projects = projects.map(obj => {
+            let incompleteCount = obj.todos.filter(todo => !todo.completed).length;
+            obj._doc.incompleteCount = incompleteCount
+            return obj
+        });
+
         res.send(projects)
         
     } catch (error) {

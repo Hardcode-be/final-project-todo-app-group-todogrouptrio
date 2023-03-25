@@ -10,12 +10,13 @@ function Dashboard() {
     const navigate = useNavigate();
 
     const [projects, setProjects] = useState([]);
+    console.log("🚀 ~ file: Dashboard.jsx:13 ~ Dashboard ~ projects:", projects)
     const token = useAuthStore(state => state.getToken());
 
     useEffect(() => {
         (async function () {
             try {
-                let response = await axios(BASE_URL+'protected/user/projects',getHeader(token))
+                let response = await axios.get(BASE_URL+'protected/user/projects',getHeader(token))
                 setProjects(response.data)
             } catch (error) {
                 console.log(error);
@@ -35,8 +36,12 @@ function Dashboard() {
 
         creation = `created: ${creation}`
         
-        let todoAmount = project.todos.length;
+        let todoAmount = 'Todos: '+project.todos.length;
         if(todoAmount === 0) todoAmount = '';
+
+        let incompleteCount = 'Incompleted: '+project.incompleteCount;
+        if(incompleteCount === 0) incompleteCount = '';
+
         
         //todo delete icon
         return (
@@ -45,13 +50,19 @@ function Dashboard() {
                     <h1 className="text-xl font-bold text-center mb-2 pb-4">{project.title}</h1>
                     <hr />
                     <div className="h-44 pt-2 pb-2">
-                        <span className="pt-4 pb-4">{project.description}</span>
-                        <h3>{todoAmount}</h3>
+                        <span className="pt-4 pb-4 text-sm">{project.description}</span>
                     </div>
                     <hr />
-                    <div className="pt-4 pb-2">
-                        <h4 className="text-xs text-gray-600">{creation}</h4>
-                        <h4 className="text-xs text-gray-600">{lastUpdate}</h4>
+                    <div className="pt-4 h-24">
+                        <div className='flex justify-evenly pb-1'>
+                            <h3 className="text-xs text-gray-600">{todoAmount}</h3>
+                            <h3></h3>
+                            <h3 className="text-xs text-gray-600">{incompleteCount}</h3>
+                        </div>
+                        <div className='flex flex-col text-center'>
+                            <h4 className="text-xs text-gray-600">{creation}</h4>
+                            <h4 className="text-xs text-gray-600">{lastUpdate}</h4>
+                        </div>
                     </div>
                 </div>
             </a>

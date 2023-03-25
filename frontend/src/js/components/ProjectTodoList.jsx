@@ -76,18 +76,28 @@ function ProjectTodoList(){
             </li>
         )
     });
-
+    //todo Icons wo stift geschrieben steht z.B.
     return(
         <div className="border-8 m-14 pt-8 pl-8 pr-8">
             <div className='flex justify-between'>
                 <div>
-                    <h1 className="text-4xl p-2">{project.state.title}</h1>
-                    <h1 className="text-xl p-2">{project.state.description}</h1>
+                    <div className='flex'>
+                        <h1 className="text-4xl p-2">{project.state.title}</h1>
+                        <button>stift</button>
+                    </div>
+                    <div className='flex'>
+                        <h1 className="text-xl p-2">{project.state.description}</h1>
+                        <button>stift</button>
+                    </div>
                 </div>
                 <div className='border-2 w-6'>
+                    <a>
 
+                    </a>
                 </div>
-
+                <div>
+                    <button>delete</button>
+                </div>
             </div>
 
 

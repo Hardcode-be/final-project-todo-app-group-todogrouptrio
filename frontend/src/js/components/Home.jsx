@@ -11,7 +11,6 @@ function Home() {
     let navigate = useNavigate()
 
     const token = useAuthStore(state => state.getToken());
-    console.log("🚀 ~ file: Home.jsx:14 ~ Home ~ token:", token)
     const setUser = useAuthStore(state => state.setUser);
 
 
