@@ -34,19 +34,12 @@ export async function updateProjectById(req, res) {
     // Extrahiere Body
     let body = req.body;
 
-    // Fuehre Model-Funktion aus und speichere Ergebnis
-    let result = await ProjectModel.update(id, body);
-
-    // Wenn Ergebnis leer ist error code 404
-    if (result === null) {
-        res.status(404).send({
-            error: `Todo with ID ${id} not found`
-        });
-        return;
+    try {
+        let response = await ProjectModel.updateProjectById(id, body);
+        res.send(response);
+    } catch (error) {
+        console.log(error);
     }
-
-    // Sende Updateergbnis zurueck
-    res.send(result);
 }
 
 
@@ -66,6 +59,18 @@ export async function deleteProjectById(req, res) {
         return;
     } else {
         res.status(200).send({deleted : {success: true}})
+    }
+}
+
+export async function deleteTodoByProjectAndId(req, res) {
+    let todoId = req.params.todoId;
+    let projectId = req.params.projectId
+
+    try {
+        let response = await ProjectModel.deleteTodoById(projectId, todoId);
+        res.send(response);
+    } catch (error) {
+        console.log(error);
     }
 }
 

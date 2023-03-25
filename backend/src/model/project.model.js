@@ -3,7 +3,7 @@ import { connectProjectToUser } from "./user.model.js";
 
 const todoSubSchema = mongoose.Schema({
     // _id: false,
-    text: {type: String, required: true},
+    text: {type: String, required: true, unique: true},
     completed: {type: Boolean, required: true}
 }, {timestamps: true})
 
@@ -49,6 +49,23 @@ export async function insertProject(body, userId) {
             msg: error.message
         };
     }
+}
+
+export async function updateProjectById(projectId, newTodo){
+    return await Project.findOneAndUpdate(
+        { _id: projectId }, // Filtern nach der ID des Projekts
+        { $push: { todos: newTodo } }, // Verwenden Sie den $push-Operator, um das neue Todo zur Liste von Todos hinzuzufügen
+        { new: true } 
+      );
+
+}
+
+export async function deleteTodoById(projectId, todoId) {
+    return await Project.findOneAndUpdate(
+        { _id: projectId }, // Filtern nach der ID des Projekts
+        { $pull: { todos: { _id: todoId } } },  // Verwenden Sie den $pull-Operator, um das Todo-Objekt aus der Liste von Todos zu entfernen
+        { new: true } 
+      );
 }
 
 export async function removeProject(id) {

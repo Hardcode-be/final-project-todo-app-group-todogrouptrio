@@ -1,6 +1,6 @@
 import { Router } from "express";
 import jwt from 'jsonwebtoken';
-import { addNewProject, updateProjectById, getAllProjects, deleteProjectById } from "../controller/project.controller.js";
+import { addNewProject, updateProjectById, getAllProjects, deleteProjectById, deleteTodoByProjectAndId } from "../controller/project.controller.js";
 import { getUserProjects, getStatus } from "../controller/user.controller.js";
 
 
@@ -44,6 +44,9 @@ protectedRouter.route('/projects')
 // Routen Definition fuer todos
 protectedRouter.route('/user/projects')
     .get(getUserProjects)
+
+protectedRouter.route('/projects/:projectId/todo/:todoId')
+    .delete(deleteTodoByProjectAndId)
 
 // Routen Definition fuer todos mit bestimmter ID
 protectedRouter.route('/projects/:id')

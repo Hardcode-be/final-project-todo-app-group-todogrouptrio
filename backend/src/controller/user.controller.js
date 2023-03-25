@@ -105,7 +105,6 @@ export async function getUserProjects(req, res) {
 
 export async function getStatus(req, res) {
     const userId = req.tokenPayload.userId;
-    console.log("🚀 ~ file: user.controller.js:108 ~ getStatus ~ req.tokenPayload:", req.tokenPayload)
 
     try {
         let user = await UserModel.findUserById(userId);
