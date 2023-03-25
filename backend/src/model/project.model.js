@@ -51,7 +51,7 @@ export async function insertProject(body, userId) {
     }
 }
 
-export async function updateProjectById(projectId, newTodo){
+export async function addTodoToProjectById(projectId, newTodo){
     return await Project.findOneAndUpdate(
         { _id: projectId }, // Filtern nach der ID des Projekts
         { $push: { todos: newTodo } }, // Verwenden Sie den $push-Operator, um das neue Todo zur Liste von Todos hinzuzufügen
@@ -69,7 +69,6 @@ export async function deleteTodoById(projectId, todoId) {
 }
 
 export async function editTodoById(projectId, todoId, newTodoText) {
-    console.log("🚀 ~ file: project.model.js:72 ~ editTodoById ~ newTodoText:",typeof newTodoText.text)
     return await Project.findOneAndUpdate(
         { _id: projectId, "todos._id": todoId }, // Filtern nach der ID des Projekts
         { $set: { "todos.$.text": newTodoText.text } },  // Verwenden Sie den $pull-Operator, um das Todo-Objekt aus der Liste von Todos zu entfernen
@@ -77,8 +76,15 @@ export async function editTodoById(projectId, todoId, newTodoText) {
       );
 }
 
+export async function updateProjectById(projectId, body) {
+    return await Project.findOneAndUpdate(
+        { _id: projectId}, // Filtern nach der ID des Projekts
+        { $set: { title: body.title, description: body.description } },  // Verwenden Sie den $pull-Operator, um das Todo-Objekt aus der Liste von Todos zu entfernen
+        { new: true } 
+      );
+}
+
 export async function changeState(projectId, todoId, state) {
-    
     return await Project.findOneAndUpdate(
         { _id: projectId, "todos._id": todoId }, // Filtern nach der ID des Projekts
         { $set: { "todos.$.completed": state.completed } },  // Verwenden Sie den $pull-Operator, um das Todo-Objekt aus der Liste von Todos zu entfernen

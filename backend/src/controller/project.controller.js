@@ -28,6 +28,20 @@ export async function addNewProject(req, res) {
 
 
 // Controller Funktion fuer PUT /todos/:id
+export async function addTodoToProjectById(req, res) {
+    // Extrahiere ID aus URL Parametern
+    let id = req.params.id;
+    // Extrahiere Body
+    let body = req.body;
+
+    try {
+        let response = await ProjectModel.addTodoToProjectById(id, body);
+        res.send(response);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export async function updateProjectById(req, res) {
     // Extrahiere ID aus URL Parametern
     let id = req.params.id;

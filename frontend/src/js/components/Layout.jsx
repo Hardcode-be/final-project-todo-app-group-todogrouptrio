@@ -1,9 +1,11 @@
-import {Link, Outlet} from 'react-router-dom';
+import {Link, Outlet, useLocation} from 'react-router-dom';
 import useAuthStore from '../hooks/useAuthStore';
 
 function Layout() {
     const authStore = useAuthStore();
+    let location = useLocation();
 
+    let isOnDashboard = (location.pathname === '/dashboard')
     
     const handleLogout = () => authStore.logout();
 
@@ -14,7 +16,7 @@ function Layout() {
             </div>
             <nav>
                 <ul className='flex flex-row justify-evenly m-8' >
-                    <li><Link to='/'>Dashboard</Link></li>
+                    {isOnDashboard ? <></> : <li><Link to='/'>Dashboard</Link></li>}
                     <li><Link to='/register'>Connections</Link></li>
                     <li><button onClick={handleLogout} className='border-none' >Logout</button></li>
                 </ul>

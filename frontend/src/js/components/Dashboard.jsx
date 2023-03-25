@@ -10,7 +10,6 @@ function Dashboard() {
     const navigate = useNavigate();
 
     const [projects, setProjects] = useState([]);
-    console.log("🚀 ~ file: Dashboard.jsx:13 ~ Dashboard ~ projects:", projects)
     const token = useAuthStore(state => state.getToken());
 
     useEffect(() => {
@@ -60,8 +59,8 @@ function Dashboard() {
                             <h3 className="text-xs text-gray-600">{incompleteCount}</h3>
                         </div>
                         <div className='flex flex-col text-center'>
-                            <h4 className="text-xs text-gray-600">{creation}</h4>
-                            <h4 className="text-xs text-gray-600">{lastUpdate}</h4>
+                            <h4 className="text-xs text-gray-700">{creation}</h4>
+                            <h4 className="text-xs text-gray-700">{lastUpdate}</h4>
                         </div>
                     </div>
                 </div>
