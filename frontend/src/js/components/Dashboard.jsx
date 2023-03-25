@@ -38,6 +38,7 @@ function Dashboard() {
         let todoAmount = project.todos.length;
         if(todoAmount === 0) todoAmount = '';
         
+        //todo delete icon
         return (
             <a key={project._id} onClick={() => handleClick(project._id, project)}>
                 <div className="flex justify-between flex-col border-4 p-4 h-64 rounded" >

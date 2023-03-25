@@ -68,6 +68,23 @@ export async function deleteTodoById(projectId, todoId) {
       );
 }
 
+export async function editTodoById(projectId, todoId, newTodoText) {
+    return await Project.findOneAndUpdate(
+        { _id: projectId, "todos._id": todoId }, // Filtern nach der ID des Projekts
+        { $set: { "todos.$.text": newTodoText } },  // Verwenden Sie den $pull-Operator, um das Todo-Objekt aus der Liste von Todos zu entfernen
+        { new: true } 
+      );
+}
+
+export async function changeState(projectId, todoId, state) {
+    
+    return await Project.findOneAndUpdate(
+        { _id: projectId, "todos._id": todoId }, // Filtern nach der ID des Projekts
+        { $set: { "todos.$.completed": state.completed } },  // Verwenden Sie den $pull-Operator, um das Todo-Objekt aus der Liste von Todos zu entfernen
+        { new: true } 
+      );
+}
+
 export async function removeProject(id) {
     return await Project.deleteOne({_id: id})
 }

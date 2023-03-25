@@ -74,3 +74,33 @@ export async function deleteTodoByProjectAndId(req, res) {
     }
 }
 
+export async function editTodoById(req, res) {
+
+    let todoId = req.params.todoId;
+    let projectId = req.params.projectId;
+    let newTodoText = req.body;
+
+    try {
+        let response = await ProjectModel.editTodoById(projectId, todoId, newTodoText);
+        res.send(response);
+    } catch (error) {
+        console.log(error);
+    }
+    
+}
+
+
+
+export async function changeTodoState(req, res) {
+    let todoId = req.params.todoId;
+    let projectId = req.params.projectId;
+    let state = req.body;
+
+    try {
+        let response = await ProjectModel.changeState(projectId, todoId, state);
+        res.send(response);
+    } catch (error) {
+        console.log(error);
+    }
+}
+

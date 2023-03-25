@@ -53,7 +53,7 @@ function CreateProject() {
     
 
     let projectInput = 
-        <div  >
+        <div className="flex justify-between flex-col border-4 pl-4 pr-4 h-64 rounded relative" >
             <button onClick={() => changeView()} className="absolute top-0 right-0 rounded-full p-2 border-0 text-black" >X</button>
             <input value={title} onChange={(e)=>setTitle(e.target.value)} className="border-2 p-1"  placeholder="Title" type="text" />
             <hr />

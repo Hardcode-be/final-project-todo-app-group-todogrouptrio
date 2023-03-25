@@ -12,11 +12,14 @@ function ProjectTodoList(){
     const token = useAuthStore(state => state.getToken());
 
     const [showTodoInput, setShowTodoInput] = useState(false);
+    const [showEditInput, setShowEditInput] = useState(false);
+
     const [newTodo, setNewTodo] = useState('');
     const [todoList, setTodos] = useState(project.state.todos);
     const [updateInfo, setUpdateInfo] = useState(project.state.updatedAt)
 
     const handleTodoInputView = () => setShowTodoInput(!showTodoInput);
+    const handleEditInputView = () => setShowEditInput(!showEditInput)
     const handleNewTodo = async () => {
         let todoObj = {
             text: newTodo,
@@ -33,9 +36,29 @@ function ProjectTodoList(){
         }
     }
     const handleDelete = async (todoId) => {
-        console.log(`projects/${id}/todo/${todoId}`);
         try {
             let response = await axios.delete(BASE_URL+`protected/projects/${id}/todo/${todoId}`, getHeader(token));
+            setTodos(response.data.todos);
+            setUpdateInfo(response.data.updatedAt)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    const handleEditTodo = async (todoId) => {
+
+        let newText = 'heeeeello'
+
+        try {
+            let response = await axios.put(BASE_URL+`protected/projects/${id}/todo/${todoId}`, newText, getHeader(token));
+            setTodos(response.data.todos);
+            setUpdateInfo(response.data.updatedAt)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    const handleCompletedTodo = async (todoId, state) => {
+        try {
+            let response = await axios.patch(BASE_URL+`protected/projects/${id}/todo/${todoId}`, {completed: !state}, getHeader(token));
             setTodos(response.data.todos);
             setUpdateInfo(response.data.updatedAt)
         } catch (error) {
@@ -67,16 +90,24 @@ function ProjectTodoList(){
     let lastUpdate = new Date(updateInfo).toLocaleString("de-DE");
 
     let todos = todoList.map((todo, index) => {
+        let taskStyle = "";
+        if (todo.completed) taskStyle = "line-through"
+        
 
         return(
             <li key={todo._id} className="flex justify-between m-2 p-3 border-2 bg-slate-500 text-gray-300" >
-                <div className="line-through">
+                <div className={taskStyle} >
                     {index+1}. {todo.text}
                 </div>
                 <div>
-                    <button className="pl-2 pr-2 mr-3 rounded">edit</button>
+                    <button onClick={()=>handleEditTodo(todo._id)} className="pl-2 pr-2 mr-3 rounded">edit</button>
                     <button onClick={()=>handleDelete(todo._id)} className="pl-2 pr-2 mr-3 rounded">delete</button>
-                    <button className="pl-2 pr-2 mr-3 rounded">done</button>
+                    {todo.completed ? 
+                        <button onClick={()=>handleCompletedTodo(todo._id, todo.completed)} className="pl-2 pr-2 mr-3 rounded">undone</button>
+                        :
+                        <button onClick={()=>handleCompletedTodo(todo._id, todo.completed)} className="pl-2 pr-2 mr-3 rounded">done</button>
+                    }
+                    
                 </div>
             </li>
         )
