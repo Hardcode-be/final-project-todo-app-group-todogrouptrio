@@ -2,11 +2,13 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../hooks/useAuthStore";
+import { BASE_URL, getHeader } from '../services/config'
+
 
 function Register() {
     let navigate = useNavigate()
-    const authenticate = useAuthStore(state => state.authenticate);
 
+    const authenticate = useAuthStore(state => state.authenticate);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -16,18 +18,16 @@ function Register() {
     const submitHandler = async (evt) => {
         evt.preventDefault();
 
-
         let newUser = {
             username: username,
             password: password,
         };
 
         try {
-            let response = await axios.post('http://localhost:8080/auth/register', newUser)
-
+            let response = await axios.post(BASE_URL+'auth/register', newUser)
             if (response.data.success) {
-                navigate('/projects', {})
-
+                authenticate(response.data);
+                navigate('/dashboard', {});
             }
 
         } catch (error) {
@@ -54,12 +54,12 @@ function Register() {
         <input
           value={password}
           onChange={handlePassword}
-          placeholder="password"
+          placeholder="Password"
           type="password"
           name="password"
           className="logreg-input"
         />
-        <button type="submit">Register</button>
+        <button className="rounded-full" type="submit">Register</button>
       </form>
     </div>
   );

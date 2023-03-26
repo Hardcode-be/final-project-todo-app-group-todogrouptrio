@@ -12,7 +12,6 @@ export async function getAllProjects(req, res) {
 // Controller Funktion fuer POST /todos
 export async function addNewProject(req, res) {
     const userId = req.tokenPayload.userId;
-    console.log("🚀 ~ file: project.controller.js:15 ~ addNewProject ~ userId:", userId)
     let body = req.body;
 
     // Rufe Model-Funktion auf und speichere Ergebnis
@@ -29,25 +28,32 @@ export async function addNewProject(req, res) {
 
 
 // Controller Funktion fuer PUT /todos/:id
+export async function addTodoToProjectById(req, res) {
+    // Extrahiere ID aus URL Parametern
+    let id = req.params.id;
+    // Extrahiere Body
+    let body = req.body;
+
+    try {
+        let response = await ProjectModel.addTodoToProjectById(id, body);
+        res.send(response);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export async function updateProjectById(req, res) {
     // Extrahiere ID aus URL Parametern
     let id = req.params.id;
     // Extrahiere Body
     let body = req.body;
 
-    // Fuehre Model-Funktion aus und speichere Ergebnis
-    let result = await ProjectModel.update(id, body);
-
-    // Wenn Ergebnis leer ist error code 404
-    if (result === null) {
-        res.status(404).send({
-            error: `Todo with ID ${id} not found`
-        });
-        return;
+    try {
+        let response = await ProjectModel.updateProjectById(id, body);
+        res.send(response);
+    } catch (error) {
+        console.log(error);
     }
-
-    // Sende Updateergbnis zurueck
-    res.send(result);
 }
 
 
@@ -67,8 +73,48 @@ export async function deleteProjectById(req, res) {
         return;
     } else {
         res.status(200).send({deleted : {success: true}})
-
     }
+}
 
+export async function deleteTodoByProjectAndId(req, res) {
+    let todoId = req.params.todoId;
+    let projectId = req.params.projectId
+
+    try {
+        let response = await ProjectModel.deleteTodoById(projectId, todoId);
+        res.send(response);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function editTodoById(req, res) {
+
+    let todoId = req.params.todoId;
+    let projectId = req.params.projectId;
+    let newTodoText = req.body;
+
+    try {
+        let response = await ProjectModel.editTodoById(projectId, todoId, newTodoText);
+        res.send(response);
+    } catch (error) {
+        console.log(error);
+    }
+    
+}
+
+
+
+export async function changeTodoState(req, res) {
+    let todoId = req.params.todoId;
+    let projectId = req.params.projectId;
+    let state = req.body;
+
+    try {
+        let response = await ProjectModel.changeState(projectId, todoId, state);
+        res.send(response);
+    } catch (error) {
+        console.log(error);
+    }
 }
 

@@ -15,11 +15,15 @@ export async function registerNewUser(req, res) {
         // Fuehre Model-Funktion zum Einfuegen eines neuen Users aus
         const user = await UserModel.insertNewUser(body);
 
+        // Erstelle neuen JWT Token mit payload und Verfall nach einer Stunde (60 Minuten * 60 Sekunden)
+        let token = jwt.sign({ userId: user._id, username: user.username}, process.env.JWT_SECRET);
+
         // Sende Erfolgsmeldung zurueck
         res.send({
             success: true,
             id: user._id,
             username: user.username,
+            projects: user.projectList.length,
             token: token
         });
 
@@ -54,6 +58,7 @@ export async function login(req, res) {
 
     // Vergleiche uebermitteltes password mit dem gehashten password aus der DB
     if (bcrypt.compareSync(password, user.password)) {
+
         // Erstelle neuen JWT Token mit payload und Verfall nach einer Stunde (60 Minuten * 60 Sekunden)
         let token = jwt.sign({ userId: user._id, username: user.username}, process.env.JWT_SECRET);
 
@@ -63,9 +68,9 @@ export async function login(req, res) {
         // Sende Erfolgsnachricht sowie neuen Token zurueck
         res.send({
             success: true,
-            message: `User ${user.username} logged in successfully!`,
             id: user._id,
             username: user.username,
+            projects: user.projectList.length,
             token: token
         });
 
@@ -81,4 +86,45 @@ export async function login(req, res) {
 
 export async function getAllUsers(req, res) {
     res.send(await UserModel.getAll());
+}
+
+export async function getUserProjects(req, res) {
+    const userId = req.tokenPayload.userId;
+
+    try {
+
+        let response = await UserModel.getUserProjects(userId);
+        let projects = [...response[0].projectList];
+
+        projects = projects.map(obj => {
+            let incompleteCount = obj.todos.filter(todo => !todo.completed).length;
+            obj._doc.incompleteCount = incompleteCount
+            return obj
+        });
+
+        res.send(projects)
+        
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
+export async function getStatus(req, res) {
+    const userId = req.tokenPayload.userId;
+
+    try {
+        let user = await UserModel.findUserById(userId);
+        
+        res.send({
+            success: true,
+            id: user._id,
+            username: user.username,
+            projects: user.projectList.length,
+            // token: req.tokenPayload
+        });
+        
+    } catch (error) {
+        console.log(error);
+    }
 }

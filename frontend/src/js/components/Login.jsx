@@ -2,6 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../hooks/useAuthStore";
+import { BASE_URL, getHeader } from '../services/config'
+
 
 function Login() {
     const navigate = useNavigate()
@@ -13,7 +15,6 @@ function Login() {
     const handleName = (evt)=>setUsername(evt.target.value)
     const handlePassword = (evt)=>setPassword(evt.target.value)
 
-
     const submitHandler = async (evt)=>{
         evt.preventDefault();
 
@@ -23,11 +24,11 @@ function Login() {
         }
 
         try {
-            let response = await axios.post('http://localhost:8080/auth/login', newUser)
-            console.log("🚀 ~ file: Login.jsx:23 ~ submitHandler ~ response:", response.data)
-
-            authenticate(response.data);
-            navigate('/dashboard', {})
+            let response = await axios.post(BASE_URL+'auth/login', newUser)
+            if (response.data.success) {
+                authenticate(response.data);
+                navigate('/dashboard', {});
+            }
 
         } catch (error) {
             console.error(error);
@@ -57,9 +58,12 @@ function Login() {
                     type="password" 
                     name="password" 
                     placeholder="Password" 
-                    className="logreg-input"
+                    className="logreg-input "
                 />
-                <button type="submit" >Login</button>
+                <button className="rounded-full" type="submit" >Login</button>
+
+
+                
             </form>
         </div>
 
