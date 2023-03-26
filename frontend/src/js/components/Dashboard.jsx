@@ -45,7 +45,7 @@ function Dashboard() {
         //todo delete icon
         return (
             <a key={project._id} onClick={() => handleClick(project._id, project)}>
-                <div className="flex justify-between flex-col border-4 p-4 h-64 rounded bg-slate-400" >
+                <div className="flex justify-between flex-col border-4 p-4 h-64 rounded bg-slate-400 cursor-pointer" >
                     <h1 className="text-xl font-bold text-center mb-2 pb-4">{project.title}</h1>
                     <hr />
                     <div className="h-44 pt-2 pb-2">

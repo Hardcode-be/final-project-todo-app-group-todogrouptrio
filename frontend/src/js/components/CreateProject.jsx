@@ -24,9 +24,10 @@ function CreateProject() {
 
         try {
             let response = await axios.post(BASE_URL+'protected/projects', newProject, getHeader(token))
-            console.log("🚀 ~ file: CreateProject.jsx:22 ~ handleNewProject ~ response:", response)
-            navigate('/', {})
-            setShowInputs(!showInputs)
+            if(response.status === 200) {
+                navigate('/', {})
+                setShowInputs(!showInputs)
+            }
         } catch (error) {
             console.log(error);
         }
@@ -38,11 +39,11 @@ function CreateProject() {
 
     let defaultView =
         <a onClick={() => changeView()}>
-            <div className="flex justify-between flex-col border-4 p-4 h-64 rounded bg-slate-300" >
+            <div className="flex justify-between flex-col border-4 p-4 h-64 rounded bg-slate-300 cursor-pointer" >
                 <h1 className="text-xl font-bold text-center mb-2 pb-4">New Project</h1>
                 <hr />
                 <div className="h-44 text-center ">
-                    <p className="pt-4 pb-4 text-center text-7xl text-gray-600">+</p>
+                    <p className="pt-4 pb-5 text-center text-7xl text-gray-600">+</p>
                 </div>
                 <hr />
                 <div className="pt-4 pb-2">

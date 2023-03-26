@@ -1,7 +1,7 @@
 import { Router } from "express";
 import jwt from 'jsonwebtoken';
 import { addNewProject, updateProjectById, addTodoToProjectById,  getAllProjects, deleteProjectById, deleteTodoByProjectAndId, editTodoById, changeTodoState } from "../controller/project.controller.js";
-import { getUserProjects, getStatus } from "../controller/user.controller.js";
+import { getUserProjects, getStatus, findUsersByQuery, askUserToByConnected, connectionData } from "../controller/user.controller.js";
 
 
 // Middleware-Funktion zum Validieren von Tokens im Header
@@ -36,6 +36,9 @@ protectedRouter.use(verifyToken);
 protectedRouter.route('/status')
     .get(getStatus)
 
+protectedRouter.route('/users')
+    .get(findUsersByQuery)
+
 // Routen Definition fuer todos
 protectedRouter.route('/projects')
     .get(getAllProjects)
@@ -55,6 +58,12 @@ protectedRouter.route('/projects/:id')
     .put(addTodoToProjectById)
     .patch(updateProjectById)
     .delete(deleteProjectById)
+
+protectedRouter.route('/invite/:id')
+    .get(askUserToByConnected)
+
+protectedRouter.route('/connect')
+    .get(connectionData)
 
 // Routen Definition fuer root
 protectedRouter.route('/')

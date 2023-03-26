@@ -5,6 +5,9 @@ const userSchema = mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     projectList: [ { type: mongoose.Schema.Types.ObjectId, ref: 'Project' } ],
+    friendsList: [ { type: mongoose.Schema.Types.ObjectId, ref: 'User' } ],
+    incomingReq: [ { type: mongoose.Schema.Types.ObjectId, ref: 'User' } ],
+    outgoingReq: [ { type: mongoose.Schema.Types.ObjectId, ref: 'User' } ]
 }, { timestamps: true });
 
 
@@ -62,4 +65,31 @@ export async function connectProjectToUser(userId, projectId) {
     let user = await findUserById(userId);
     user.projectList.push(projectId);
     return await user.save();
+}
+
+export async function findUsersByQuery(query){
+    
+    const target = { username: { $regex: query, $options: 'i' } };
+    const sort = { username: 1 };
+
+    return await User.find(target).sort(sort)
+}
+
+export async function askUserToByConnected(askingUser, userId) {
+
+    let user = await findUserById(userId);
+    user.incomingReq.push(askingUser);
+    await user.save();
+
+    let requester = await findUserById(askingUser);
+    requester.outgoingReq.push(user);
+    await requester.save();
+    
+    return {success: true}
+}
+
+export async function connectionData(userId) {
+    return await User.findById(userId)
+    .select(['friendsList', 'incomingReq', 'outgoingReq'])
+    .populate(['friendsList', 'incomingReq', 'outgoingReq'])
 }

@@ -3,8 +3,8 @@ import { connectProjectToUser } from "./user.model.js";
 
 const todoSubSchema = mongoose.Schema({
     // _id: false,
-    text: {type: String, required: true, unique: true},
-    completed: {type: Boolean, required: true}
+    text: {type: String},
+    completed: {type: Boolean}
 }, {timestamps: true})
 
 // Definiere Todo Schema
