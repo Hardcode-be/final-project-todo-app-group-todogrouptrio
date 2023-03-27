@@ -1,27 +1,31 @@
-import {Link, Outlet} from 'react-router-dom';
+import {Link, Outlet, useLocation} from 'react-router-dom';
 import useAuthStore from '../hooks/useAuthStore';
 
 function Layout() {
     const authStore = useAuthStore();
+    let location = useLocation();
+
+    let isOnDashboard = (location.pathname === '/dashboard')
+    let isOnConnections = (location.pathname === '/connections')
+
+    
+    const handleLogout = () => authStore.logout();
 
     return (
-        <>
-            <h2 style={{textAlign: 'center', fontSize: '18sp'}}>Welcome aboard, {authStore.isAuthenticated() ? authStore.user.fullname : 'Anonymous'}!</h2>
+        <div className='flex flex-col justify-center'>
+            <div className='text-4xl text-center mt-5 font-bold  '>
+                <h2>Welcome to MaNiMa, {authStore.isAuthenticated() ? authStore.user.username : 'my Friend'}!</h2>
+            </div>
             <nav>
-                <ul style={{
-                    display: 'flex',
-                    gap: '1em',
-                    justifyContent: 'center'
-                }}>
-                    <li><Link to='/'>Home</Link></li>
-                    <li><Link to='/login'>Login</Link></li>
-                    <li><Link to='/register'>Register</Link></li>
-                    <li><Link to='/protected'>Protected</Link></li>
+                <ul className='flex flex-row justify-evenly m-8' >
+                    {isOnDashboard ? <></> : <li><Link to='/'>Dashboard</Link></li>}
+                    {isOnConnections ? <></> : <li><Link to='/connections'>Connections</Link></li>}
+                    <li><button onClick={handleLogout} className='border-none' >Logout</button></li>
                 </ul>
             </nav>
 
             <Outlet />
-        </>
+        </div>
     );
 }
 

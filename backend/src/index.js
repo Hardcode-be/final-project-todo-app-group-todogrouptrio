@@ -17,7 +17,7 @@ app.use(express.json());
 
 // Middleware fuer CROSS-ORIGIN-REQUEST
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'http://localhost:5174',
     // credentials: true
 }));
 

@@ -1,8 +1,68 @@
 
+
 body {
+  background-color: rgb(144, 141, 141);
   div.container {
     background-color: lightgrey;
   }
+
+  .LogRegContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    margin: 5rem;
+
+  }
+
+  .LoginContainer {
+    display: flex;
+    // border-right: solid;
+    flex-direction: column;
+    padding: 3rem;
+  }
+
+
+
+  .RegisterContainer {
+    display: flex;
+    flex-direction: column;
+    // border-left: solid;
+    padding: 3rem;
+
+
+  }
+
+  .RegLogDivider{
+    height: 80%;
+    border: solid;
+
+
+  }
+
+
+
+  .logreg-input {
+      border: solid;
+
+
+  }
+
+  form{
+    display: flex;
+    flex-direction: column;
+
+  }
+
+  // .RegLogDivider {
+  //   position: absolute;
+  //   padding-top: 0.5rem;
+  //   height: 40px;
+  //   background-color: white;
+  //   top: 50%;
+  //   left: 48%
+  // }
+
 
   h1 {
     color: black;
@@ -22,7 +82,7 @@ body {
     border: 1px solid black;
 
 
-    button {
+    button{
       background-color: white;
       border: 1px solid grey;
     }
@@ -34,6 +94,14 @@ body {
     button:active {
       background-color: red;
     }
+  }
+
+  button{
+    border: solid
+  }
+
+  .input-test{
+    border: solid;
   }
 
   #login-form {

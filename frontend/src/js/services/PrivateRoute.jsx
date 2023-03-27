@@ -7,7 +7,7 @@ function PrivateRoute() {
     const location = useLocation();
 
     return (
-        authStore.isAuthenticated() ? <Outlet /> : <Navigate to='/login' replace state={{from: location}} />
+        authStore.isAuthenticated() ? <Outlet /> : <Navigate to='/' replace state={{from: location}} />
     );
 }
 

@@ -6,11 +6,11 @@ const authRouter = Router();
 
 // Routen Definition fuer /register
 authRouter.route('/register')
-    .post(registerNewUser);
+    .post(registerNewUser)
 
 // Routen Definition fuer /login
 authRouter.route('/login')
-    .post(login);
+    .post(login)
 
 
 export default authRouter;
