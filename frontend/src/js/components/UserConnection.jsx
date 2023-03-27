@@ -39,12 +39,7 @@ function UserConnection() {
           })();
     },[]);
 
-    console.log(filterArray);
-
-
     useEffect(()=>{
-        console.log("🚀 ~ file: UserConnection.jsx:15 ~ UserConnection ~ searchQuery:", searchQuery)
-
         if(searchQuery === '') setSearchResult([]);
 
         const timer = setTimeout(async () => {
@@ -68,7 +63,26 @@ function UserConnection() {
         } catch (error) {
             console.log(error);
         }
+    }
 
+    const handleAccept = async (userId) => {
+        try {
+            let response = await axios.get(BASE_URL+`protected/accept/${userId}`, getHeader(token));
+            console.log("🚀 ~ file: UserConnection.jsx:42 ~ handleInvitation ~ response:", response)
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleDecline = async (userId) => {
+        try {
+            let response = await axios.get(BASE_URL+`protected/decline/${userId}`, getHeader(token));
+            console.log("🚀 ~ file: UserConnection.jsx:42 ~ handleInvitation ~ response:", response)
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     
@@ -102,13 +116,13 @@ function UserConnection() {
         let creation = new Date(user.createdAt).toLocaleString("de-DE");
         
         return (
-            <a key={user._id} onClick={() => handleInvitation(user._id)}>
+            <a key={user._id}>
                 <div className="flex justify-between flex-col border-4 p-4 h-64 rounded bg-slate-400 cursor-pointer" >
                     <h1 className="text-xl font-bold text-center mb-2 pb-4">{user.username}</h1>
                     <hr />
                     <div className="h-44 text-center ">
                         <span className="pt-4 pb-4 text-sm">
-                            <p className="pt-6 pb-4 text-center text-5xl text-gray-600">Invite</p>
+                            <p className="pt-6 pb-4 text-center text-5xl text-gray-600">Message</p>
                         </span>
                     </div>
                     <hr />
@@ -128,13 +142,13 @@ function UserConnection() {
         let creation = new Date(user.createdAt).toLocaleString("de-DE");
         
         return (
-            <a key={user._id} onClick={() => handleInvitation(user._id)}>
-                <div className="flex justify-between flex-col border-4 p-4 h-64 rounded bg-slate-400 cursor-pointer" >
+            <a key={user._id}>
+                <div className="flex justify-between flex-col border-4 p-4 h-64 rounded bg-slate-400" >
                     <h1 className="text-xl font-bold text-center mb-2 pb-4">{user.username}</h1>
                     <hr />
                     <div className="h-44 text-center ">
                         <span className="pt-4 pb-4 text-sm">
-                            <p className="pt-6 pb-4 text-center text-5xl text-gray-600">Invite</p>
+                            <p className="pt-6 pb-4 text-center text-5xl text-gray-600">Waiting...</p>
                         </span>
                     </div>
                     <hr />
@@ -154,14 +168,14 @@ function UserConnection() {
         let creation = new Date(user.createdAt).toLocaleString("de-DE");
         
         return (
-            <a key={user._id} onClick={() => handleInvitation(user._id)}>
-                <div className="flex justify-between flex-col border-4 p-4 h-64 rounded bg-slate-400 cursor-pointer" >
+            <a key={user._id}>
+                <div className="flex justify-between flex-col border-4 p-4 h-64 rounded bg-slate-400" >
                     <h1 className="text-xl font-bold text-center mb-2 pb-4">{user.username}</h1>
                     <hr />
                     <div className="h-44 text-center ">
-                        <span className="pt-4 pb-4 text-sm">
-                            <p className="pt-6 pb-4 text-center text-5xl text-gray-600">Invite</p>
-                        </span>
+                            {/* <p className="pt-6 pb-4 text-center text-5xl text-gray-600">Invite</p> */}
+                            <button onClick={()=>handleAccept(user._id)} className='p-5 m-5 text-gray-600 bg-green-500 rounded' >Accept</button>
+                            <button onClick={()=>handleDecline(user._id)} className='p-5 m-5 text-gray-600 bg-red-500 rounded' >Decline</button>
                     </div>
                     <hr />
                     <div className="pt-4 h-24">
@@ -183,35 +197,54 @@ function UserConnection() {
                 <input value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)} className='w-96 ml-2 m-0 p-1 rounded text-black' placeholder='Find other People' id='userSearch' type="text" />
             </div>
 
-            <div className='text-center mt-10 mr-14 ml-14'>
-                <h1>Search Result</h1>
-            </div>
-            <div  className="grid grid-cols-4 gap-4 border-8 mr-14 ml-14  mb-14  p-8">
-                {foundPeople}
-            </div>
+            {searchResult.length > 0 ?
+                <>
+                <div className='text-center mt-10 mr-14 ml-14'>
+                    <h1 className='mt-8 mb-4 text-3xl font-bold'>Search Result</h1>
+                </div>
+                <div  className="grid grid-cols-4 gap-4 border-8 mr-14 ml-14  mb-14  p-8">
+                    {foundPeople}
+                </div>
+                </>
+                : <></>
+            }
 
-            <div className='text-center mt-0 mr-14 ml-14'>
-                <h1>Friends</h1>
-            </div>
-            <div  className="grid grid-cols-4 gap-4 border-8 mr-14 ml-14  mb-14  p-8">
-                {YourFriends}
-            </div>
+            {incoming.length > 0 ?
+                <>
+                <div className='text-center mt-0 mr-14 ml-14'>
+                    <h1 className='mt-8 mb-4 text-3xl font-bold'>Accept this Requests</h1>
+                </div>
+                <div  className="grid grid-cols-4 gap-4 border-8 mr-14 ml-14  mb-4  p-8">
+                    {AcceptInvitation}
+                </div>
+                </>
+                : <></>
+            }
 
-            <div className='text-center mt-0 mr-14 ml-14'>
-                <h1>peopleYouInvited</h1>
-            </div>
-            <div  className="grid grid-cols-4 gap-4 border-8 mr-14 ml-14  mb-14  p-8">
-                {peopleYouInvited}
-            </div>
+            {friends.length > 0 ?
+                <>
+                <div className='text-center mt-0 mr-14 ml-14'>
+                    <h1 className='mt-8 mb-4 text-3xl font-bold'>Friends</h1>
+                </div>
+                <div  className="grid grid-cols-4 gap-4 border-8 mr-14 ml-14  mb-14  p-8">
+                    {YourFriends}
+                </div>
+                </>
+                : <></>
+            }
 
-            <div className='text-center mt-0 mr-14 ml-14'>
-                <h1>Accept this Requests</h1>
-            </div>
-            <div  className="grid grid-cols-4 gap-4 border-8 mr-14 ml-14  mb-14  p-8">
-                {AcceptInvitation}
-            </div>
+            {outgoing.length > 0 ?
+                <>
+                <div className='text-center mt-0 mr-14 ml-14'>
+                    <h1 className='mt-8 mb-4 text-3xl font-bold'>People You Invited</h1>
+                </div>
+                <div  className="grid grid-cols-4 gap-4 border-8 mr-14 ml-14  mb-4  p-8">
+                    {peopleYouInvited}
+                </div>
+                </>
+                : <></>
+            }
         </>
-
 
     )
 }

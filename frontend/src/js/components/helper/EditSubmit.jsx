@@ -65,7 +65,7 @@ function EditSubmit({todo, taskStyle, index, setTodosCallback, setUpdateInfoCall
 
 
     let editOrSubmitBtn = showEditInput ? 
-        <button onClick={()=>handleEditTodo(todo._id)} className={btnStyle} type='submit'>submit</button>
+        <button onClick={()=>handleEditTodo(todo._id)} className={btnStyle}>submit</button>
         :
         <button onClick={handleEditInputView} className={btnStyle}>edit</button>
     

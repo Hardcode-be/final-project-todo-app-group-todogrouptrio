@@ -1,7 +1,7 @@
 import { Router } from "express";
 import jwt from 'jsonwebtoken';
-import { addNewProject, updateProjectById, addTodoToProjectById,  getAllProjects, deleteProjectById, deleteTodoByProjectAndId, editTodoById, changeTodoState } from "../controller/project.controller.js";
-import { getUserProjects, getStatus, findUsersByQuery, askUserToByConnected, connectionData } from "../controller/user.controller.js";
+import { addNewProject, updateProjectById, addTodoToProjectById,  getAllProjects, deleteProjectById, deleteTodoByProjectAndId, editTodoById, changeTodoState, getProjectParticipants, addUserToProject } from "../controller/project.controller.js";
+import { getUserProjects, getStatus, findUsersByQuery, askUserToByConnected, connectionData, acceptUserInvitation, declineUserInvitation, getFriends } from "../controller/user.controller.js";
 
 
 // Middleware-Funktion zum Validieren von Tokens im Header
@@ -62,8 +62,24 @@ protectedRouter.route('/projects/:id')
 protectedRouter.route('/invite/:id')
     .get(askUserToByConnected)
 
+protectedRouter.route('/accept/:id')
+    .get(acceptUserInvitation)
+
+protectedRouter.route('/decline/:id')
+    .get(declineUserInvitation)
+
 protectedRouter.route('/connect')
     .get(connectionData)
+
+protectedRouter.route('/friends')
+    .get(getFriends)
+
+protectedRouter.route('/participants/:id')
+    .get(getProjectParticipants)
+
+    // /projects/${id}/invite/${friendId}
+protectedRouter.route('/projects/:projectId/invite/:userId')
+    .get(addUserToProject)
 
 // Routen Definition fuer root
 protectedRouter.route('/')

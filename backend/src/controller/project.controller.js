@@ -118,3 +118,26 @@ export async function changeTodoState(req, res) {
     }
 }
 
+export async function getProjectParticipants(req, res) {
+    let projectId = req.params.id
+
+    try {
+        let response = await ProjectModel.getProjectParticipants(projectId);
+        res.send(response);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+export async function addUserToProject(req, res) {
+    let projectId = req.params.projectId
+    let userId = req.params.userId
+
+    try {
+        let response = await ProjectModel.addUserToProject(projectId, userId);
+        res.send(response);
+    } catch (error) {
+        console.log(error);
+    }
+}

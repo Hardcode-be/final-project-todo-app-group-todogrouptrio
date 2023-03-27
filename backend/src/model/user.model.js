@@ -79,11 +79,11 @@ export async function askUserToByConnected(askingUser, userId) {
 
     let user = await findUserById(userId);
     user.incomingReq.push(askingUser);
-    await user.save();
 
     let requester = await findUserById(askingUser);
     requester.outgoingReq.push(user);
-    await requester.save();
+
+    await Promise.all([user.save(), requester.save()]);
     
     return {success: true}
 }
@@ -92,4 +92,49 @@ export async function connectionData(userId) {
     return await User.findById(userId)
     .select(['friendsList', 'incomingReq', 'outgoingReq'])
     .populate(['friendsList', 'incomingReq', 'outgoingReq'])
+}
+
+
+export async function acceptUserInvitation(currentUserId, invitationSenderId) {
+
+    let currentUser = await findUserById(currentUserId);
+    let invitationSender = await findUserById(invitationSenderId);
+
+    currentUser.incomingReq = currentUser.incomingReq.filter(ids => ids.toString() !== invitationSenderId);
+    invitationSender.outgoingReq = invitationSender.outgoingReq.filter(ids => ids.toString() !== currentUserId);
+
+    currentUser.friendsList.push(invitationSenderId);
+    invitationSender.friendsList.push(currentUserId);
+
+    await Promise.all([currentUser.save(), invitationSender.save()]);
+    
+    return {success: true}
+}
+
+export async function declineUserInvitation(currentUserId, invitationSenderId) {
+
+    let currentUser = await findUserById(currentUserId);
+    let invitationSender = await findUserById(invitationSenderId);
+
+    currentUser.incomingReq = currentUser.incomingReq.filter(ids => ids.toString() !== invitationSenderId);
+    invitationSender.outgoingReq = invitationSender.outgoingReq.filter(ids => ids.toString() !== currentUserId);
+
+    await Promise.all([currentUser.save(), invitationSender.save()]);
+    
+    return {success: true}
+}
+
+export async function getFriends(userId) {
+    return await User.findById(userId)
+    .select('friendsList')
+    .populate('friendsList')
+}
+
+export async function addProjectToUser(projectId, userId) {
+    let user = await findUserById(userId);
+
+    user.projectList.push(projectId);
+
+    await user.save();
+
 }

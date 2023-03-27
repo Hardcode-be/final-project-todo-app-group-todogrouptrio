@@ -4,7 +4,7 @@ import { BASE_URL, getHeader } from '../services/config';
 import useAuthStore from "../hooks/useAuthStore";
 import EditSubmit from "./helper/EditSubmit";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 
@@ -19,12 +19,17 @@ function ProjectTodoList(){
     const [showTitleInput, setShowTitleInput] = useState(false);
     const [showDescriptionInput, setShowDescriptionInput] = useState(false);
     const [showDoubleCheck, setShowDoubleCheck] = useState(false);
+    const [showFriends, setShowFriends] = useState(false);
+    const [showProjectParticipants, setShowProjectParticipants] = useState(false);
 
     const [newTodo, setNewTodo] = useState('');
     const [title, setTitle] = useState(project.state.title);
     const [description, setDescription] = useState(project.state.description);
 
     const [todoList, setTodos] = useState(project.state.todos);
+    const [friendList, setFriendList] = useState([])
+    const [projectUserList, setProjectUserList] = useState(project.state.userList)
+
     const [updateInfo, setUpdateInfo] = useState(project.state.updatedAt)
 
     const handleTodoInputView = () => setShowTodoInput(!showTodoInput);
@@ -72,6 +77,38 @@ function ProjectTodoList(){
         }
     }
 
+    const handleAddFriendToProject = async (friendId) => {
+        try {
+            let response = await axios.get(BASE_URL+`protected/projects/${id}/invite/${friendId}`, getHeader(token));
+            setProjectUserList(response.data.userList)
+            setShowProjectParticipants(true)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(()=>{
+        (async ()=>{
+            try {
+                let friends = await axios.get(BASE_URL+`protected/friends`, getHeader(token));
+                setFriendList(friends.data.friendsList);
+
+                let participants = await axios.get(BASE_URL+`protected/participants/${id}`, getHeader(token));
+                setProjectUserList(participants.data.userList);
+
+
+            } catch (error) {
+                console.log(error);
+            }
+        })();
+    },[])
+
+    useEffect(()=>{
+        if (projectUserList > 1) {
+            setShowProjectParticipants(true)
+        } 
+    },[projectUserList])
+
     let btnStyle = 'pl-2 pr-2 mr-3 rounded';
     let inputStyle = 'w-96 ml-2 m-0 p-1 rounded text-black'
 
@@ -115,6 +152,30 @@ function ProjectTodoList(){
         )
     });
 
+    let friends = friendList.map(friend => {
+        return(
+            <li key={friend._id} className='pt-2 pb-2 pr-5 pl-5 text-center cursor-pointer' >
+                <hr />
+                <a onClick={()=>handleAddFriendToProject(friend._id)}>
+                    <p>{friend.username}</p>
+                </a>
+                <hr />
+            </li>
+        )
+    });
+
+    let participants = projectUserList.map(friend => {
+        return(
+            <li key={friend._id} className='pt-2 pb-2 pr-5 pl-5 text-center ' >
+                <hr />
+                    <p>{friend.username}</p>
+                <hr />
+            </li>
+        )
+    })
+
+
+
 
     return(
         <div className="border-8 m-14 pt-8 pl-8 pr-8">
@@ -151,11 +212,38 @@ function ProjectTodoList(){
                 </div>
                 <div className='flex'>
                 {/* -----Userliste----- */}
-                    <div className='border-2 mr-4'>
-                        <a>
-                            {project.state.userList}
-                        </a>
-                    </div>
+                    {showFriends ? 
+
+                        <>
+                        <div className='border-black border-4  mr-4 w-36 rounded relative'>
+                            <button onClick={()=>setShowFriends(!showFriends)} className='text-white border-none absolute -bottom-px right-1' >x</button>
+                            <ul>
+                                {friends}
+                            </ul>
+                        </div>
+                        </>
+                        :
+                        <div className='w-36'>
+                            <button className={btnStyle}  onClick={()=>setShowFriends(!showFriends)} >invite Friends</button>
+                        </div>
+                        
+                    }
+
+                    {showProjectParticipants ?
+                        <div className='border-black border-4 mr-4 w-36 rounded relative'>
+                            <button onClick={()=>setShowProjectParticipants(!showProjectParticipants)} className='text-white border-none absolute -bottom-px right-1' >x</button>
+
+                            <ul>
+                                {participants}
+                            </ul>
+                        </div>
+                        :
+                        <div className='w-36'>
+                            <button className={btnStyle}  onClick={()=>setShowProjectParticipants(!showProjectParticipants)} >Participants</button>
+                        </div>
+                    }
+
+
                 {/* -----Delete----- */}
                     <div className='w-36' >
                         {showDoubleCheck ? 

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { connectProjectToUser } from "./user.model.js";
+import { connectProjectToUser, addProjectToUser } from "./user.model.js";
 
 const todoSubSchema = mongoose.Schema({
     // _id: false,
@@ -94,5 +94,20 @@ export async function changeState(projectId, todoId, state) {
 
 export async function removeProject(id) {
     return await Project.deleteOne({_id: id})
+}
+
+export async function getProjectParticipants(projectId) {
+    return await Project.findById(projectId)
+    .select('userList')
+    .populate('userList')
+}
+
+export async function addUserToProject(projectId, userId) {
+    await addProjectToUser(projectId, userId);
+    return await Project.findOneAndUpdate(
+        { _id: projectId }, // Filtern nach der ID des Projekts
+        { $push: { userList: userId } }, // Verwenden Sie den $push-Operator, um das neue Todo zur Liste von Todos hinzuzufügen
+        { new: true } 
+    );
 }
 

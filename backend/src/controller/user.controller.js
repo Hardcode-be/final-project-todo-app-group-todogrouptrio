@@ -167,3 +167,40 @@ export async function connectionData(req, res) {
         console.log(error);
     }
 }
+
+export async function acceptUserInvitation(req, res) {
+    const currentUser= req.tokenPayload.userId;
+    let invitationSender = req.params.id
+
+
+    try {
+        let response = await UserModel.acceptUserInvitation(currentUser, invitationSender);
+        res.send(response);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function declineUserInvitation(req, res) {
+    const currentUser= req.tokenPayload.userId;
+    let invitationSender = req.params.id
+
+
+    try {
+        let response = await UserModel.declineUserInvitation(currentUser, invitationSender);
+        res.send(response);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function getFriends(req, res) {
+    const currentUser= req.tokenPayload.userId;
+
+    try {
+        let response = await UserModel.getFriends(currentUser);
+        res.send(response);
+    } catch (error) {
+        console.log(error);
+    }
+}
